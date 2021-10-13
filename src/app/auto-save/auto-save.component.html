@@ -1,0 +1,45 @@
+<p>auto-save works!</p>
+
+<hr>
+
+<div class="page-container">
+  <div class="page-header">
+    <div class="auto-save-timer" *ngIf="isAutoSaveTimerStart">倒计时：{{autoSaveTimerCount}}</div>
+
+    <div class="operator-bar">
+      <div class="auto-switch">
+        <input name="autoSave"
+          id="switch"
+          type="checkbox"
+          [formControl]="autoSaveToggleControl"><label for="switch">是否开启自动保存</label>
+      </div>
+      <button class="save-btn" (click)="onSaveBtnClick()">保存</button>
+    </div>
+  </div>
+
+  <fieldset>
+    <legend>用户信息</legend>
+    <form [formGroup]="userForm">
+      <div class="form-item">
+        姓名：<input type="text" formControlName="name" />
+      </div>
+      <div class="form-item">
+        年龄：<input type="text" formControlName="age" />
+      </div>
+      <div class="form-item">
+        身高：<input type="text" formControlName="height" />
+      </div>
+      <div class="form-item">
+        体重：<input type="text" formControlName="weight" />
+      </div>
+    </form>
+  </fieldset>
+
+  <fieldset style="margin-top: 16px">
+    <legend>保存结果</legend>
+    <div>姓名：{{savedUserInfo?.name}}</div>
+    <div>年龄：{{savedUserInfo?.age}}</div>
+    <div>身高：{{savedUserInfo?.height}}</div>
+    <div>体重：{{savedUserInfo?.weight}}</div>
+  </fieldset>
+</div>

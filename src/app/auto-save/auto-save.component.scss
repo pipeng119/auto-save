@@ -1,0 +1,42 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  
+  .operator-bar {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  
+  .auto-save-timer {
+    margin-right: 24px;
+  }
+  
+  .auto-switch {
+    display: flex;
+    align-items: center;
+    user-select: none;
+    cursor: pointer;
+  }
+  
+  .auto-switch > label {
+    cursor: pointer;
+  }
+  
+  .auto-switch > input {
+    cursor: pointer;
+  }
+  
+  .save-btn {
+    margin-left: 16px;
+    cursor: pointer;
+  }
+  
+  .form-item + .form-item {
+    margin-top: 8px;
+  }
+  
