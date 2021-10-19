@@ -1,17 +1,13 @@
-<p>auto-save works!</p>
-
-<hr>
-
 <div class="page-container">
   <div class="page-header">
-    <div class="auto-save-timer" *ngIf="isAutoSaveTimerStart">倒计时：{{autoSaveTimerCount}}</div>
-
+    <div class="auto-save-timer" *ngIf="isAutoSaveTimerStart">
+      倒计时：{{autoSaveTimerCount}}
+    </div>
     <div class="operator-bar">
       <div class="auto-switch">
-        <input name="autoSave"
-          id="switch"
-          type="checkbox"
-          [formControl]="autoSaveToggleControl"><label for="switch">是否开启自动保存</label>
+        <input name="autoSave" id="switch" type="checkbox" [formControl]="autoSaveToggleControl">
+        <label for="switch">是否开启自动保存
+        </label>
       </div>
       <button class="save-btn" (click)="onSaveBtnClick()">保存</button>
     </div>
@@ -43,3 +39,5 @@
     <div>体重：{{savedUserInfo?.weight}}</div>
   </fieldset>
 </div>
+
+<div id="div1"></div>

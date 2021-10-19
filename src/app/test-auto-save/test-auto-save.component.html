@@ -1,0 +1,54 @@
+<div class="fn-box">
+  <div class="auto-save-timer">
+    <span  *ngIf="isAutoSaveTimerStart">倒计时：{{autoSaveTimerCount}}</span>
+  </div>
+  <div [class.abc!important]="123">11111</div>
+  <div>
+    <label>
+      <input type="checkbox" [formControl]="toggleAutoSaveBtn">
+      是否开启自动保存
+    </label>
+    <button (click)="save()">保存</button>
+  </div>
+</div>
+<fieldset>
+  <legend>用户信息</legend>
+  <form class="form-box" action="" [formGroup]="userInfo">
+    <label>
+      姓名：
+      <input type="text" formControlName="name">
+    </label>
+    <label>
+      年龄：
+      <input type="text" formControlName="age">
+    </label>
+    <label>
+      性别：
+      <input type="text" formControlName="sex">
+    </label>
+    <label>
+      住址：
+      <input type="text" formControlName="address">
+    </label>
+  </form>
+</fieldset>
+
+<fieldset>
+  <legend>保存的用户信息</legend>
+  <p>
+    姓名：
+    <span>{{saveUserInfo?.name}}</span>
+  </p>
+  <p>
+    年龄：
+    <span>{{saveUserInfo?.age}}</span>
+  </p>
+  <p>
+    性别
+    <span>{{saveUserInfo?.sex}}</span>
+  </p>
+  <p>
+    地址
+    <span>{{saveUserInfo?.address}}</span>
+  </p>
+</fieldset>

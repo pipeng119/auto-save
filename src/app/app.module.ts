@@ -4,11 +4,19 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AutoSaveComponent } from './auto-save/auto-save.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TestAutoSaveComponent } from './test-auto-save/test-auto-save.component';
+import { AutoSaveFormDirective } from './auto-save-form.directive';
+import { MyFilterPipe } from './pipe/my-filter.pipe';
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AutoSaveComponent
+    AutoSaveComponent,
+    TestAutoSaveComponent,
+    AutoSaveFormDirective,
+    MyFilterPipe,
+    TestComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { Subject, Observable, EMPTY, merge, timer } from 'rxjs';
-import { filter, finalize, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { Subject, Observable, EMPTY, merge, timer, of, interval } from 'rxjs';
+import { concatMap, filter, finalize, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 
 export interface UserInfo {
   name: string;
@@ -16,8 +16,11 @@ export interface UserInfo {
   styleUrls: ['./auto-save.component.scss']
 })
 export class AutoSaveComponent implements OnInit {
+  // 表单实例
   userForm: FormGroup;
+  // 保存的用户信息
   savedUserInfo: UserInfo;
+  // 是否自动保存的标识
   autoSaveToggleControl: FormControl;
 
   // 是否正在执行自动保存任务
@@ -25,18 +28,20 @@ export class AutoSaveComponent implements OnInit {
   // 自动保存任务的计时器秒数
   autoSaveTimerCount: number;
 
-  private saveBtnClickSource = new Subject<void>();
+  private saveBtnClickSource: Subject<void> = new Subject<void>();
 
   // 最后的保存用户信息的数据流
   private save$: Observable<UserInfo>;
 
   constructor(private fb: FormBuilder) {
+    // 初始化表单
     this.userForm = fb.group({
       name: [''],
       age: [''],
       height: [''],
       weight: ['']
     });
+    // 默认开启自动保存
     this.autoSaveToggleControl = fb.control(true);
 
     /**
@@ -54,21 +59,28 @@ export class AutoSaveComponent implements OnInit {
      * 为了方便展示倒计时，所以使用了 timer(0, 1000) 来实时展示定时器秒数
      * 实际中可以直接使用 timer(5000).pipe(takeUntil(this.clickSave$))
      * takeUntil 的作用是当手动保存触发时中断定时器
+     * timer 不做延迟，间隔1000ms从0开始的正整数递增
      */
-    const autoSaveTimer$ = timer(0, 1000).pipe(
-      take(6),
-      map(t => 5 - t),
-      tap(c => {
-        this.isAutoSaveTimerStart = true;
-        this.autoSaveTimerCount = c;
-      }),
-      finalize(() => {
-        this.isAutoSaveTimerStart = false;
-        this.autoSaveTimerCount = null;
-      }),
-      filter(t => t === 0),
-      takeUntil(clickSave$)
-    );
+    const autoSaveTimer$ = timer(0, 1000)
+      .pipe(
+        // 取前六条数据等价于5秒后
+        take(6),
+        // 映射成倒计时5，4，3，2，1，0
+        map(t => 5 - t),
+        tap(c => {
+          this.isAutoSaveTimerStart = true;
+          this.autoSaveTimerCount = c;
+        }),
+        // 流完成时执行
+        finalize(() => {
+          this.isAutoSaveTimerStart = false;
+          this.autoSaveTimerCount = null;
+        }),
+        // 0的时候才发送流
+        filter(t => t === 0),
+        // 取消订阅
+        takeUntil(clickSave$)
+      );
 
     /**
      * 自动保存功能开关控制流
@@ -100,6 +112,7 @@ export class AutoSaveComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.operatorTests();
     this.save$.subscribe(res => {
       this.savedUserInfo = res;
     });
@@ -107,6 +120,59 @@ export class AutoSaveComponent implements OnInit {
 
   onSaveBtnClick(): void {
     this.saveBtnClickSource.next();
+  }
+
+  operatorTests() {
+    // const cancel$ = new Subject();
+    // timer(0, 1000).pipe(
+    //   take(6),
+    //   map(t => {
+    //     // console.log('映射', t);
+    //     return 5 - t
+    //   }),
+    //   tap(c => {
+    //     // console.log('我是tap', c)
+    //   }),
+    //   finalize(() => console.log('完成时执行')),
+    //   filter(t => {
+    //     console.log('filter', t);
+    //     return t === 0
+    //   }),
+    //   takeUntil(cancel$)
+    // ).subscribe(res => {
+    //   console.log('res', res)
+    // });
+    // setTimeout(() => {
+    //   cancel$.next();
+    //   cancel$.complete();
+    // }, 4000)
+    // const num$ = of(1, 2, 3);
+    // num$.pipe(startWith(88,99,172))
+    //   .subscribe(res => {
+    //     console.log('res: ', res);
+    //   })
+
+    // // 立即发出值， 然后每5秒发出值
+    // const source = timer(0, 5000);
+    // // 当 source 发出值时切换到新的内部 observable，发出新的内部 observable 所发出的值
+    // const example = source.pipe(switchMap(() => interval(500)));
+    // // 输出: 0,1,2,3,4,5,6,7,8,9...0,1,2,3,4,5,6,7,8
+    // const subscribe = example.subscribe(val => console.log(val));
+    // of(1, 2, 3).pipe(switchMap(x => of(x, x ** 2, x ** 3))).subscribe(res => console.log(res))
+    // interval(500).pipe(switchMap(x => interval(200)), take(5)).subscribe(res => console.log(res))
+    // interval(500).pipe(concatMap(x => interval(200)), take(5)).subscribe(res => console.log(res))
+    const test$ = new Subject<number>();
+    // test$.subscribe(res => {
+    //   console.log(res)
+    // });
+    // setTimeout(()=> test$.next(2),2000)
+    const deriveTest$ = test$.asObservable();
+
+    deriveTest$.subscribe(res => {
+      console.log(res)
+    });
+
+    setTimeout(() => test$.next(2), 2000)
   }
 
 }

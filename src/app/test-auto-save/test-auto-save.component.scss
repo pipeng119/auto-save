@@ -1,0 +1,18 @@
+.fn-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  button {
+    margin-left: 20px;
+  }
+}
+
+.form-box {
+  display: flex;
+  flex-direction: column;
+
+  label{
+    margin-bottom: 20px;
+  }
+}

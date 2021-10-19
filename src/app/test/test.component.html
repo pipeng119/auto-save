@@ -1,0 +1,31 @@
+<div class="test">
+  <table class="a-table">
+    <thead class="a-thead">
+      <tr>
+        <th>Name</th>
+        <th>Sex</th>
+      </tr>
+    </thead>
+    <tbody class="a-tbody">
+      <ng-container *ngFor="let student of students|myFilter: filterObj">
+        <tr>
+          <td> {{ student.name }}</td>
+          <td> {{ student.sex }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+  <div class="a-p-20">
+    <label class="a-form-label">带参的纯管道：过滤male/female</label>
+    <!-- <input class="a-text-input" #filterKey /> -->
+  </div>
+  <div class="a-p-20">
+    <label class="a-form-label">过滤 name</label>
+    <input class="a-text-input" #name />
+  </div>
+  <div class="a-p-20">
+    <label class="a-form-label">过滤 sex</label>
+    <input class="a-text-input" #sex />
+  </div>
+  <button class="a-btn a-btn-secondary a-btn-lg" (click)="constructFilterObj(name.value, sex.value)">Go Filter</button>
+</div>
