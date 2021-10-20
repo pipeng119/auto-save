@@ -8,6 +8,7 @@ import { TestAutoSaveComponent } from './test-auto-save/test-auto-save.component
 import { AutoSaveFormDirective } from './auto-save-form.directive';
 import { MyFilterPipe } from './pipe/my-filter.pipe';
 import { TestComponent } from './test/test.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { TestComponent } from './test/test.component';
   imports: [
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { FormControl, FormBuilder } from '@angular/forms';
+import { DataService } from './../service/data.service';
+import { HttpClient } from '@angular/common/http';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { fromEvent, interval, merge, Observable, Subject, timer } from 'rxjs';
+import { debounceTime, take, switchMap, takeUntil, switchMapTo, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-test',
@@ -30,10 +35,44 @@ export class TestComponent implements OnInit {
     this.filterObj['sex'] = sex;
   }
 
+  @ViewChild('btn') btn: ElementRef<HTMLButtonElement>;
+  @ViewChild('myInput') myInput: ElementRef<HTMLInputElement>;
+
+  public testInput: FormControl = this.fb.control('');
+
+  public cancelStream: Subject<void> = new Subject<void>();
+
+  public result = {};
+  public cacheResult = null;
+
+  constructor(private dataService: DataService, private fb: FormBuilder) {
+
+  }
   ngOnInit(): void {
+
+    this.testInput.valueChanges
+      .pipe(
+        switchMap(() => this.dataService.getServiceData()),
+      )
+      .subscribe(
+        res => {
+          this.result = res;
+        },
+      )
+  }
+  ngAfterViewInit(): void {
+    this.myInput.nativeElement.focus();
   }
 
-
-
+  public getData(): void {
+    this.dataService.getServiceData()
+      .pipe(
+        takeUntil(this.cancelStream)
+      )
+      .subscribe(res => {
+        console.log('res', res);
+        this.result = res;
+      })
+  }
 
 }

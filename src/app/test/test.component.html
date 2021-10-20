@@ -1,4 +1,4 @@
-<div class="test">
+<!-- <div class="test">
   <table class="a-table">
     <thead class="a-thead">
       <tr>
@@ -17,7 +17,6 @@
   </table>
   <div class="a-p-20">
     <label class="a-form-label">带参的纯管道：过滤male/female</label>
-    <!-- <input class="a-text-input" #filterKey /> -->
   </div>
   <div class="a-p-20">
     <label class="a-form-label">过滤 name</label>
@@ -29,3 +28,15 @@
   </div>
   <button class="a-btn a-btn-secondary a-btn-lg" (click)="constructFilterObj(name.value, sex.value)">Go Filter</button>
 </div>
+
+<button (click)="getData()" #btn>获取数据</button>
+<hr>
+<br>
+<br>
+<br> -->
+
+<input type="text" #myInput [formControl]="testInput">
+
+<hr>
+
+{{result | json}}
